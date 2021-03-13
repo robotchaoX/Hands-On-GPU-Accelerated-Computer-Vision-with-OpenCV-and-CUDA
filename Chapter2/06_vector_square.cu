@@ -1,9 +1,11 @@
 #include "stdio.h"
-#include<iostream>
+#include <iostream>
 #include <cuda.h>
 #include <cuda_runtime.h>
+
 //Defining number of elements in Array
 #define N	5
+
 //Kernel function for squaring number
 __global__ void gpuSquare(float *d_in, float *d_out) {
 	//Getting thread index for current kernel
@@ -17,7 +19,6 @@ int main(void) {
 	float h_in[N], h_out[N];
 	//Defining Pointers for device
 	float *d_in, *d_out;
-
 	// allocate the memory on the cpu
 	cudaMalloc((void**)&d_in, N * sizeof(float));
 	cudaMalloc((void**)&d_out, N * sizeof(float));

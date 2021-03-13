@@ -1,9 +1,11 @@
 #include "stdio.h"
-#include<iostream>
+#include <iostream>
 #include <cuda.h>
 #include <cuda_runtime.h>
+
 //Defining number of elements in Array
 #define N	5
+
 //Defining Kernel function for vector addition
 __global__ void gpuAdd(int *d_a, int *d_b, int *d_c) {
 	//Getting block index of current kernel
@@ -17,7 +19,7 @@ int main(void) {
 	int h_a[N], h_b[N], h_c[N];
 	//Defining device pointers
 	int *d_a, *d_b, *d_c;
-	// allocate the memory
+	// allocate the device memory
 	cudaMalloc((void**)&d_a, N * sizeof(int));
 	cudaMalloc((void**)&d_b, N * sizeof(int));
 	cudaMalloc((void**)&d_c, N * sizeof(int));
@@ -33,7 +35,6 @@ int main(void) {
 	gpuAdd << <N, 1 >> >(d_a, d_b, d_c);
 	//Copy result back to host memory from device memory
 	cudaMemcpy(h_c, d_c, N * sizeof(int), cudaMemcpyDeviceToHost);
-
 	printf("Vector addition on GPU \n");
 	//Printing result on console
 	for (int i = 0; i < N; i++) {

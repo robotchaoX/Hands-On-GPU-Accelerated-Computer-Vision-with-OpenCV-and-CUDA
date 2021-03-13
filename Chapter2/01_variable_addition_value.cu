@@ -3,8 +3,8 @@
 #include <cuda_runtime.h>
 #include <stdio.h>
 
-//Definition of kernel function to add two variables
-__global__ void gpuAdd(int d_a, int d_b, int *d_c) {
+//Definition of kernel function to add two variables, parameters are passed by value
+__global__ void gpuAdd(int d_a, int d_b, int *d_c) { // 传值
 	*d_c = d_a + d_b;
 }
 

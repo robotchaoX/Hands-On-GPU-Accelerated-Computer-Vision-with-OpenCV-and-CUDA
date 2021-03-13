@@ -4,12 +4,11 @@
 #include <stdio.h>
 
 // Main Program 
-
 int main(void)
 {
 	int device_Count = 0;
-	cudaGetDeviceCount(&device_Count);
 	// This function returns count of number of CUDA enable devices and 0 if there are no CUDA capable devices.
+	cudaGetDeviceCount(&device_Count);
 	if (device_Count == 0)
 	{
 		printf("There are no available device(s) that support CUDA\n");
@@ -18,6 +17,4 @@ int main(void)
 	{
 		printf("Detected %d CUDA Capable device(s)\n", device_Count);
 	}
-
-	
 }

@@ -1,7 +1,9 @@
 #include "stdio.h"
-#include<iostream>
+#include <iostream>
+
 //Defining Number of elements in Array
 #define N	5
+
 //Defining vector addition function for CPU
 void cpuAdd(int *h_a, int *h_b, int *h_c) {
 	int tid = 0;	
@@ -14,7 +16,7 @@ void cpuAdd(int *h_a, int *h_b, int *h_c) {
 
 int main(void) {
 	int h_a[N], h_b[N], h_c[N];
-		//Initializing two arrays for addition
+	//Initializing two arrays for addition
 	for (int i = 0; i < N; i++) {
 		h_a[i] = 2 * i*i;
 		h_b[i] = i;

@@ -2,8 +2,9 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <stdio.h>
+
 //Kernel function to add two variables, parameters are passed by reference
-__global__ void gpuAdd(int *d_a, int *d_b, int *d_c) {
+__global__ void gpuAdd(int *d_a, int *d_b, int *d_c) { // 传引用
 	*d_c = *d_a + *d_b;
 }
 
