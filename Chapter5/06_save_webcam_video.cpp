@@ -4,7 +4,7 @@
 using namespace cv;
 using namespace std;
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	// open the Webcam
 	VideoCapture cap(0);
@@ -21,17 +21,37 @@ int main(int argc, char* argv[])
 	String win_name = "Webcam Video";
 	// create a window
 	namedWindow(win_name);
+	// set frame size according to camera
+	Size frame_size(640, 640);
+	int frames_per_second = 30; // video fps
+	int delay = 1000 / frames_per_second;
+	// open the video writer
+	VideoWriter v_writer("images/video.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), frames_per_second, frame_size, true);
+	if (!v_writer.isOpened())
+	{
+		cout << "Cannot open VideoWriter" << endl;
+		return -1;
+	}
 	while (true)
 	{
 		Mat frame;
 		// read a new frame from video
 		bool flag = cap.read(frame);
+		// write a frame to file
+		v_writer.write(frame);
 		// show the frame in the created window
 		imshow(win_name, frame);
-		if (waitKey(1) == 'q')
+		if (waitKey(delay) == 'q')
 		{
 			break;
 		}
+		if (!cap.grab())
+		{
+			cout << "grab failed!" << endl;
+			break;
+		}
 	}
+	// After finishing video write
+	v_writer.release();
 	return 0;
 }
