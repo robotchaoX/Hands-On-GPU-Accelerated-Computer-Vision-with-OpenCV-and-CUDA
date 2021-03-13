@@ -5,10 +5,11 @@
 using namespace std;
 using namespace cv;
 using namespace cv::cuda;
+
 int main()
 {
-   	VideoCapture cap("nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720, format=(string)I420, framerate=(fraction)24/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)I420 ! videoconvert ! video/x-raw, format=(string)BGR ! appsink");
-	if (!cap.isOpened())
+    VideoCapture cap("nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720, format=(string)I420, framerate=(fraction)24/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)I420 ! videoconvert ! video/x-raw, format=(string)BGR ! appsink");
+    if (!cap.isOpened())
     {
         cout << "Can not open camera or video file" << endl;
         return -1;
@@ -16,16 +17,15 @@ int main()
     Mat frame;
     cap.read(frame);
     GpuMat d_frame;
-	d_frame.upload(frame);
+    d_frame.upload(frame);
     Ptr<BackgroundSubtractor> mog = cuda::createBackgroundSubtractorMOG();
     GpuMat d_fgmask,d_fgimage,d_bgimage;
     Mat h_fgmask,h_fgimage,h_bgimage;
     mog->apply(d_frame, d_fgmask, 0.01);
-namedWindow("image", WINDOW_NORMAL);
+    namedWindow("image", WINDOW_NORMAL);
     namedWindow("foreground mask", WINDOW_NORMAL);
     namedWindow("foreground image", WINDOW_NORMAL);
     namedWindow("mean background image", WINDOW_NORMAL);
-
     while(1)
     {
         cap.read(frame);
@@ -50,6 +50,5 @@ namedWindow("image", WINDOW_NORMAL);
         if (waitKey(1) == 'q')
             break;
     }
-
     return 0;
 }

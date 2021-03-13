@@ -6,10 +6,8 @@
 int main(int argc, char **argv)
 {
 	printf(" CUDA Device Query (Runtime API) version (CUDART static linking)\n\n");
-
 	int device_Count = 0;
 	cudaGetDeviceCount(&device_Count);
-
 	// This function call returns 0 if there are no CUDA capable devices.
 	if (device_Count == 0)
 	{
@@ -19,27 +17,22 @@ int main(int argc, char **argv)
 	{
 		printf("Detected %d CUDA Capable device(s)\n", device_Count);
 	}
-
 	int device, driver_Version = 0, runtime_Version = 0;
-
 	for (device = 0; device < device_Count; ++device)
 	{
 		cudaSetDevice(device);
 		cudaDeviceProp device_Property;
 		cudaGetDeviceProperties(&device_Property, device);
-
 		printf("\nDevice %d: \"%s\"\n", device, device_Property.name);
-
 		// Console log
 		cudaDriverGetVersion(&driver_Version);
 		cudaRuntimeGetVersion(&runtime_Version);
 		printf("  CUDA Driver Version / Runtime Version          %d.%d / %d.%d\n", driver_Version / 1000, (driver_Version % 100) / 10, runtime_Version / 1000, (runtime_Version % 100) / 10);
 		printf("  CUDA Capability Major/Minor version number:    %d.%d\n", device_Property.major, device_Property.minor);
-		printf( "  Total amount of global memory:                 %.0f MBytes (%llu bytes)\n",
+		printf("  Total amount of global memory:                 %.0f MBytes (%llu bytes)\n",
 			(float)device_Property.totalGlobalMem / 1048576.0f, (unsigned long long) device_Property.totalGlobalMem);
-		printf("  (%2d) Multiprocessors", device_Property.multiProcessorCount );
-		printf("  GPU Max Clock rate:                            %.0f MHz (%0.2f GHz)\n", device_Property.clockRate * 1e-3f, device_Property.clockRate * 1e-6f);
-
+		printf("  (%2d) Multiprocessors", device_Property.multiProcessorCount);
+		printf("  GPU Max Clock rate:      %.0f MHz (%0.2f GHz)\n", device_Property.clockRate * 1e-3f, device_Property.clockRate * 1e-6f);
 		// This is supported in CUDA 5.0 (runtime API device properties)
 		printf("  Memory Clock rate:                             %.0f Mhz\n", device_Property.memoryClockRate * 1e-3f);
 		printf("  Memory Bus Width:                              %d-bit\n", device_Property.memoryBusWidth);
@@ -53,7 +46,7 @@ int main(int argc, char **argv)
 		printf("  Maximum Layered 1D Texture Size, (num) layers  1D=(%d), %d layers\n",
 			device_Property.maxTexture1DLayered[0], device_Property.maxTexture1DLayered[1]);
 		printf("  Maximum Layered 2D Texture Size, (num) layers  2D=(%d, %d), %d layers\n",
-			device_Property.maxTexture2DLayered[0], device_Property.maxTexture2DLayered[1], device_Property.maxTexture2DLayered[2]);
+			   device_Property.maxTexture2DLayered[0], device_Property.maxTexture2DLayered[1], device_Property.maxTexture2DLayered[2]);
 		printf("  Total amount of constant memory:               %lu bytes\n", device_Property.totalConstMem);
 		printf("  Total amount of shared memory per block:       %lu bytes\n", device_Property.sharedMemPerBlock);
 		printf("  Total number of registers available per block: %d\n", device_Property.regsPerBlock);
@@ -83,7 +76,6 @@ int main(int argc, char **argv)
 		printf("  Supports Cooperative Kernel Launch:            %s\n", device_Property.cooperativeLaunch ? "Yes" : "No");
 		printf("  Supports MultiDevice Co-op Kernel Launch:      %s\n", device_Property.cooperativeMultiDeviceLaunch ? "Yes" : "No");
 		printf("  Device PCI Domain ID / Bus ID / location ID:   %d / %d / %d\n", device_Property.pciDomainID, device_Property.pciBusID, device_Property.pciDeviceID);
-
 		const char *sComputeMode[] =
 		{
 			"Default (multiple host threads can use ::cudaSetDevice() with device simultaneously)",
@@ -95,5 +87,5 @@ int main(int argc, char **argv)
 		};
 		printf("  Compute Mode:\n");
 		printf("     < %s >\n", sComputeMode[device_Property.computeMode]);
-	}	
+	}
 }
