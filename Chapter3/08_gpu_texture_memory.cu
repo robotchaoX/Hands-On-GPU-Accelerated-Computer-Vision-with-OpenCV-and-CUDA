@@ -1,7 +1,8 @@
 #include "stdio.h"
-#include<iostream>
+#include <iostream>
 #include <cuda.h>
 #include <cuda_runtime.h>
+
 #define NUM_THREADS 10
 #define N 10
 texture <float, 1, cudaReadModeElementType> textureRef;
@@ -17,7 +18,7 @@ __global__ void gpu_texture_memory(int n, float *d_out)
 int main()
 {
 	//Calculate number of blocks to launch
-	int num_blocks = N / NUM_THREADS + ((N % NUM_THREADS) ? 1 : 0);
+	int num_blocks = N / NUM_THREADS + ((N % NUM_THREADS) ? 1 : 0); // 除法向上取整
 	//Declare device pointer
 	float *d_out;
 	// allocate space on the device for the result
@@ -34,12 +35,10 @@ int main()
 	cudaMallocArray(&cu_Array, &textureRef.channelDesc, N, 1);
 	//Copy data to CUDA Array
 	cudaMemcpyToArray(cu_Array, 0, 0, h_in, sizeof(float)*N, cudaMemcpyHostToDevice);
-	
 	// bind a texture to the CUDA array
 	cudaBindTextureToArray(textureRef, cu_Array);
 	//Call Kernel	
   	gpu_texture_memory << <num_blocks, NUM_THREADS >> >(N, d_out);
-	
 	// copy result back to host
 	cudaMemcpy(h_out, d_out, sizeof(float)*N, cudaMemcpyDeviceToHost);
 	printf("Use of Texture memory on GPU: \n");
@@ -50,5 +49,5 @@ int main()
 	cudaFree(d_out);
 	cudaFreeArray(cu_Array);
 	cudaUnbindTexture(textureRef);
-	
+	return 0;
 }

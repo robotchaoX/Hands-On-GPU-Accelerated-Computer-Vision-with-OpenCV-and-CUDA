@@ -1,45 +1,41 @@
-
 #include <stdio.h>
 
 __global__ void gpu_shared_memory(float *d_a)
 {
-	// Defining local variables which are private to each thread
+	//Defining local variables which are private to each thread
 	int i, index = threadIdx.x;
 	float average, sum = 0.0f;
 	//Define shared memory
 	__shared__ float sh_arr[10];
-
-	
+	// copy data from global memory to shared memory 
 	sh_arr[index] = d_a[index];
-
-	__syncthreads();    // This ensures all the writes to shared memory have completed
-
+	//This ensures all the writes to shared memory have completed
+	__syncthreads();
 	for (i = 0; i<= index; i++) 
-	{ 
+	{
 		sum += sh_arr[i]; 
 	}
 	average = sum / (index + 1.0f);
-
+	// copy result back to the global memory
 	d_a[index] = average; 
-
 	sh_arr[index] = average;
 }
 
 int main(int argc, char **argv)
 {
 	//Define Host Array
-	float h_a[10];   
+	float h_a[10];
 	//Define Device Pointer
-	float *d_a;       
-	
+	float *d_a;
+	//Initializing Arrays
 	for (int i = 0; i < 10; i++) {
 		h_a[i] = i;
 	}
 	// allocate global memory on the device
 	cudaMalloc((void **)&d_a, sizeof(float) * 10);
-	// now copy data from host memory  to device memory 
+	// now copy data from host memory to device memory 
 	cudaMemcpy((void *)d_a, (void *)h_a, sizeof(float) * 10, cudaMemcpyHostToDevice);
-	
+	// launch the kernel
 	gpu_shared_memory << <1, 10 >> >(d_a);
 	// copy the modified array back to the host memory
 	cudaMemcpy((void *)h_a, (void *)d_a, sizeof(float) * 10, cudaMemcpyDeviceToHost);
