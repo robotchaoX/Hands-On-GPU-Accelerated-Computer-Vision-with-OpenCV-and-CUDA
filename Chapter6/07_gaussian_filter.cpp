@@ -1,22 +1,20 @@
 #include <iostream>
 #include "opencv2/opencv.hpp"
 
-
 int main ()
 {
-    cv::Mat h_img1 = cv::imread("images/cameraman.tif",0);
-    cv::cuda::GpuMat d_img1,d_result3x3,d_result5x5,d_result7x7;
-        
+	cv::Mat h_img1 = cv::imread("images/cameraman.tif",0);
+	cv::cuda::GpuMat d_img1,d_result3x3,d_result5x5,d_result7x7;
 	d_img1.upload(h_img1);
 	cv::Ptr<cv::cuda::Filter> filter3x3,filter5x5,filter7x7;
-   	filter3x3 = cv::cuda::createGaussianFilter(CV_8UC1,CV_8UC1,cv::Size(3,3),1);
+	filter3x3 = cv::cuda::createGaussianFilter(CV_8UC1,CV_8UC1,cv::Size(3,3),1);
 	filter3x3->apply(d_img1, d_result3x3);
 	filter5x5 = cv::cuda::createGaussianFilter(CV_8UC1,CV_8UC1,cv::Size(5,5),1);
 	filter5x5->apply(d_img1, d_result5x5);
 	filter7x7 = cv::cuda::createGaussianFilter(CV_8UC1,CV_8UC1,cv::Size(7,7),1);
 	filter7x7->apply(d_img1, d_result7x7);
-    cv::Mat h_result3x3,h_result5x5,h_result7x7;
-    d_result3x3.download(h_result3x3);
+	cv::Mat h_result3x3,h_result5x5,h_result7x7;
+	d_result3x3.download(h_result3x3);
 	d_result5x5.download(h_result5x5);
 	d_result7x7.download(h_result7x7);
 	cv::imshow("Original Image ", h_img1);
@@ -27,24 +25,5 @@ int main ()
 	cv::imwrite("gBlurred5x5.png", h_result5x5);
 	cv::imwrite("gBlurred7x7.png", h_result7x7);
 	cv::waitKey();
-    return 0;
+	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
