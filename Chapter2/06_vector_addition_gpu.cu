@@ -19,7 +19,7 @@ int main(void) {
 	int h_a[N], h_b[N], h_c[N];
 	//Defining device pointers
 	int *d_a, *d_b, *d_c;
-	// allocate the memory
+	// allocate the device memory
 	cudaMalloc((void**)&d_a, N * sizeof(int));
 	cudaMalloc((void**)&d_b, N * sizeof(int));
 	cudaMalloc((void**)&d_c, N * sizeof(int));
