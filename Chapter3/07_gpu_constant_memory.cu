@@ -33,8 +33,8 @@ int main(void) {
 	cudaMemcpy(d_in, h_in, N * sizeof(float), cudaMemcpyHostToDevice);
 	//Copy constants to constant memory
 	cudaMemcpyToSymbol(constant_f, &h_f, sizeof(int),0,cudaMemcpyHostToDevice);
-    cudaMemcpyToSymbol(constant_g, &h_g, sizeof(int));
-    //Calling kernel with one block and N threads per block
+	cudaMemcpyToSymbol(constant_g, &h_g, sizeof(int));
+	//Calling kernel with one block and N threads per block
 	gpu_constant_memory << <1, N >> >(d_in, d_out);
 	//Coping result back to host from device memory
 	cudaMemcpy(h_out, d_out, N * sizeof(float), cudaMemcpyDeviceToHost);

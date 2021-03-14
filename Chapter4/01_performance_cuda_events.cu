@@ -41,7 +41,7 @@ int main(void) {
 	cudaMemcpy(d_a, h_a, N * sizeof(int), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_b, h_b, N * sizeof(int), cudaMemcpyHostToDevice);
 	//Calling kernels passing device pointers as parameters
-	gpuAdd<< <512, 512>> >(d_a, d_b, d_c);
+	gpuAdd << <512, 512>> >(d_a, d_b, d_c);
 	//Copy result back to host memory from device memory
 	cudaMemcpy(h_c, d_c, N * sizeof(int), cudaMemcpyDeviceToHost);
 	cudaDeviceSynchronize();
